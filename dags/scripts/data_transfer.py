@@ -7,6 +7,7 @@ from scripts import connectors
 
 
 def write_s3_file_to_sql_table():
+    """Write s3 most recent housing data to sql table."""
     # Create s3 connection
     s3 = S3Hook('aws_s3_connection').get_conn()
     file = s3.get_object(Bucket='funda-airflow', Key='house-links/filtered-links-most-recent/filtered_most_recent.csv')
@@ -25,6 +26,7 @@ def write_s3_file_to_sql_table():
                             WHERE ci.link IN :links 
                             """)
         sql = sql.bindparams(links=tuple(links,))
+        connection.execute(sql)
 
         # Then, write the records in data_df to the city_info table
         data_df.to_sql('city_info', con=connection, if_exists='append', index=False)

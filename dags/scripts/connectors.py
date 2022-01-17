@@ -3,6 +3,7 @@ import sqlalchemy
 
 
 def connect_to_db(database_name: str):
+    """Creates connection to database with sql_conn_id."""
     # Create sql connection string
     mysql_connection_uri = MySqlHook('sql_conn_id').get_uri()
     mysql_connection_uri = mysql_connection_uri + database_name
